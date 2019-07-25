@@ -25,6 +25,7 @@ dependencies:
   location: ^2.3.5
   
   
+  
   flutter_weather_icons: ^1.0.2
 
   # The following adds the Cupertino Icons font to your application.

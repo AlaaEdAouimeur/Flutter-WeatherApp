@@ -1,9 +1,9 @@
-import 'dart:math';
-
+import 'Loadingpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weatherapp/WeatherBrain/Dateandlocation.dart';
 import 'package:flutter_weatherapp/WeatherBrain/Location.dart';
 import 'package:flutter_weatherapp/WeatherBrain/Weather.dart';
+import 'forcastcell.dart';
 import 'package:flutter_weather_icons/flutter_weather_icons.dart';
 
 class Weatherpage extends StatefulWidget {
@@ -15,6 +15,7 @@ class _WeatherpageState extends State<Weatherpage> {
   LocationService locationService;
   UserLocation userLocation;
   Weather weather;
+  List forcast;
   Map Wther;
   var url = 'http://openweathermap.org/img/wn/10d@2x.png';
   fechdata() async {
@@ -27,13 +28,53 @@ class _WeatherpageState extends State<Weatherpage> {
     });
     await getweather();
   }
+IconData geticon(String icon){
+  
+  switch (icon) {
+    case '01d' : return WeatherIcons.wiDaySunny;
+    case '01n' : return  WeatherIcons.wiNightClear;
 
+    case '02d' : return WeatherIcons.wiNightPartlyCloudy;
+    case '02n' : return  WeatherIcons.wiNightAltPartlyCloudy;
+
+    case '03d' : return WeatherIcons.wiCloudy;
+    case '03n' : return  WeatherIcons.wiCloudy;
+
+    case '04d' : return WeatherIcons.wiNightPartlyCloudy;
+    case '04n' : return  WeatherIcons.wiNightAltPartlyCloudy;
+
+    case '050d' : return WeatherIcons.wiDayFog;
+    case '050' : return  WeatherIcons.wiNightFog;
+
+    case '13d' : return WeatherIcons.wiDaySnow;
+    case '13n' : return  WeatherIcons.wiNightSnow;
+
+    case '11d' : return WeatherIcons.wiDayThunderstorm;
+    case '11n' : return  WeatherIcons.wiNightThunderstorm;
+
+    case '10d' : return WeatherIcons.wiDayRain;
+    case '10n' : return  WeatherIcons.wiNightRain;
+
+    case '09d' : return WeatherIcons.wiShowers;
+    case '09n' : return  WeatherIcons.wiNightShowers;
+        
+      break;
+    default: return WeatherIcons.from0Deg;
+  }
+ 
+}
   Future getweather() async {
+    Duration alaa = Duration(seconds: 30);
     Map _Wther = await weather.GetWeatherbyCor(userLocation);
+    Map  _Forecast = await weather.GetForcast(userLocation).timeout(alaa);
+
     setState(() {
       Wther = _Wther;
       temp = Wther['main']['temp'];
+      forcast = _Forecast['list'];
+
     });
+    print('forcast : $forcast');
   }
 
   Datetype today;
@@ -56,6 +97,10 @@ class _WeatherpageState extends State<Weatherpage> {
   @override
   Widget build(BuildContext context) {
     print(Wther);
+     return Wther ==null ? LoadingScreen() :  Showweather();
+   
+  }
+  Widget Showweather(){
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -94,12 +139,18 @@ class _WeatherpageState extends State<Weatherpage> {
               '${today.day} ${today.month} , ${today.year} ',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 15,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text(
-                  '${Wther['name']},${Wther['sys']['country']}',
-                  style: TextStyle(wordSpacing: 50, fontSize: 25),
+                Container(
+                  width: 170,
+
+                  child: Text(
+                    
+                    '${Wther['name']},${Wther['sys']['country']}',
+                    style: TextStyle(wordSpacing: 50, fontSize: 25),
+                  ),
                 ),
                 IconButton(
                   icon: Icon(Icons.gps_fixed),
@@ -115,7 +166,11 @@ class _WeatherpageState extends State<Weatherpage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 0, 30),
-                  child: Icon(WeatherIcons.wiDaySunny,
+                  
+                  child: Icon(geticon(
+                    Wther['weather'][0]['icon']
+
+                  ),
                    
                       size: 50),
                 ),
@@ -135,8 +190,15 @@ class _WeatherpageState extends State<Weatherpage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                   
-                   
+                   Text('${Wther['weather'][0]['main'].toString()}',
+                          style: TextStyle(
+                              fontSize: 25, color: Colors.amberAccent)
+                              ),
+                   Container(
+                 color: Colors.amberAccent,
+                 height: 20,
+                 width: 1,
+               ),
                      Text('${Wther['weather'][0]['description'].toString()}',
                           style: TextStyle(
                               fontSize: 25, color: Colors.amberAccent)
@@ -147,7 +209,7 @@ class _WeatherpageState extends State<Weatherpage> {
                  width: 1,
                ),
               Text(
-               '${ Wther['main']['humidity'].toString()}%',
+               '${ Wther['main']['humidity'].toString()}',
                 style: TextStyle(
                   fontSize: 23,
                    color: Colors.amberAccent
@@ -156,7 +218,7 @@ class _WeatherpageState extends State<Weatherpage> {
                Padding(
                  padding: const EdgeInsets.fromLTRB(0,0,0,15),
                  child: Icon(
-                   WeatherIcons.wiRaindrop,
+                   WeatherIcons.wiHumidity,
                    color: Colors.amber,
                    size: 40,
                  ),
@@ -214,8 +276,17 @@ class _WeatherpageState extends State<Weatherpage> {
                 )
               ],
             ),
-            Text('alaa'),
-            Text('alaa')
+             Container(
+               width: MediaQuery.of(context).size.width,
+               height: 200,
+               child: ListView.builder(
+                 itemCount: forcast.length,
+                 scrollDirection: Axis.horizontal,
+                 itemBuilder: (BuildContext context ,int  i){
+                      return Cell(forcast[i], i);
+                 },
+               ),
+             )
           ],
         ),
       ),

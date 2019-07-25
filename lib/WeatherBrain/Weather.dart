@@ -23,6 +23,21 @@ class Weather {
    }
    else print('null');
   }
+  Future GetForcast(UserLocation userLocation)async {
+   Map forecast;
+   var apikey = '75c7370c4206ebdf26a1dee238708e55';
+
+      var url = 'http://api.openweathermap.org/data/2.5/forecast?lat=${userLocation.latitude}&lon=${userLocation.longitude}&appid=$apikey&units=metric';
+    
+    http.Response httpResponse = await http.get(url);
+   forecast = json.decode(httpResponse.body);
+  // weather = weather['weather'];
+   if (forecast.isNotEmpty){
+
+    return forecast;
+   }
+   else print('null');
+  }
    GetWeatherbyString(String City)async {
    
    var apikey = '75c7370c4206ebdf26a1dee238708e55';
