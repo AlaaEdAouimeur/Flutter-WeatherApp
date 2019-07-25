@@ -279,13 +279,20 @@ IconData geticon(String icon){
              Container(
                width: MediaQuery.of(context).size.width,
                height: 200,
-               child: ListView.builder(
-                 itemCount: forcast.length,
+               child: ListView.separated(
+                  itemCount: forcast.length,
                  scrollDirection: Axis.horizontal,
                  itemBuilder: (BuildContext context ,int  i){
-                      return Cell(forcast[i], i);
+                      return Cell(forcast[i], i,geticon(Wther['weather'][0]['icon']),today);
                  },
-               ),
+                 separatorBuilder: (BuildContext context,int i){
+                         return  Container(
+                 color: Colors.black,
+                 height: 25,
+                 width: 1,
+               );
+                 },
+               )
              )
           ],
         ),
@@ -294,3 +301,39 @@ IconData geticon(String icon){
     );
   }
 }
+class Cell extends StatelessWidget {
+  final Datetype today;
+  final Map Forcast;
+ final IconData iconData;
+  final int i;
+  
+  Cell(this.Forcast,this.i,this.iconData,this.today);
+  @override
+  Widget build(BuildContext context) {
+    print('Forcast : $Forcast');
+    return Container(
+           height: 150,
+           width: MediaQuery.of(context).size.width/4,
+            decoration: new BoxDecoration(
+             //   color :   Colors.black,
+                  borderRadius: new BorderRadius.all(Radius.circular(43))
+                ),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  // DAY GOES HERE
+                  padding: const EdgeInsets.all(8),
+                  child: Text('${today.day+i+1}',style: TextStyle(color: Colors.black,fontSize: 25),),
+                ),
+                //ICON GOES HERE
+                Icon(iconData,color: Colors.black,size: 40,),
+                SizedBox(height: 8,),
+                //WEATHER GOES HERE Forcast['weather']['main']
+                Text(Forcast['weather'][0]['main'],style: TextStyle(color: Colors.black,fontSize: 20),),
+              ],
+            ),
+         );
+  }
+}
+//#c94b4b
+//#4b134f
