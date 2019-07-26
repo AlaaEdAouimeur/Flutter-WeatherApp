@@ -8,7 +8,8 @@
 
 <h4 align="center">A minimal Weather mobile app made using <a href="https://flutter.dev" target="_blank">Flutter</a>.</h4>
 
-
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+<img src="https://img.shields.io/badge/made%20with-Flutter-blue.svg?style=for-the-badge" alt="made with Flutter">
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#Overview">Overview</a> •
@@ -31,8 +32,8 @@
 * **Advices** About Driving Sports And Polen
 
 ## Overview
-* The Data Is From ![open WeatherApi](http://openweathermap.org/api)
-* The Location Is Fetched Using ![location](https://pub.dev/packages/location) **Recomended** Package
-* The Icons Are From ![Flutter Weather Icons](https://pub.dartlang.org/packages?q=flutter_weather_icons) and [Flutter Icons](https://pub.dev/packages/flutter_icons)
+* The Data Is From [open WeatherApi](http://openweathermap.org/api)
+* The Location Is Fetched Using [location](https://pub.dev/packages/location) **Recomended** Package
+* The Icons Are From [Flutter Weather Icons](https://pub.dartlang.org/packages?q=flutter_weather_icons) and [Flutter Icons](https://pub.dev/packages/flutter_icons)
 
 
