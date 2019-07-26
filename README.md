@@ -2,7 +2,7 @@
   <br>
   <a href=""><img src="images/logo.png" alt="Todo" width="200"></a>
   <br>
-  Clima - Simple & Colurful
+  Clima - Simple & Colorful
   <br>
 </h1>
 
